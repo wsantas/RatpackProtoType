@@ -1,0 +1,43 @@
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
+
+task buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+      compile('io.ratpack:ratpack-gradle:0.9.3')
+  }
+}
+
+buildscript {
+    repositories {
+        maven { url "http://oss.jfrog.org/artifactory/repo" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'io.ratpack:ratpack-gradle:0.9.3'
+    }
+}
+
+apply plugin: "ratpack-groovy"
+apply plugin: "idea"
+
+repositories {
+  jcenter()
+  maven { url "http://repo.springsource.org/repo" } // for springloaded
+}
+
+dependencies {
+  // SpringLoaded enables runtime hot reloading.
+  // It is not part of the app runtime and is not shipped in the distribution.
+    compile("org.springsource.loaded:springloaded:1.1.5.RELEASE")
+    compile("org.spockframework:spock-core:0.7-groovy-2.0")
+}
+
+run {
+    jvmArgs "-Dratpack.port=8080"
+    systemProperty "ratpack.reloadable", "true"
+}
+
